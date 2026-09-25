@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+FitBuddy | Admin View
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<section class="result-head">
+
+
+    <div>
+
+        <p class="eyebrow">
+            ADMIN / COACH VIEW
+        </p>
+
+
+        <h1>
+            All Users
+        </h1>
+
+
+        <p>
+            View registered users and their
+            latest stored workout plans.
+        </p>
+
+    </div>
+
+
+</section>
+
+
+
+<section class="card table-wrap">
+
+
+    {% if users %}
+
+
+    <table>
+
+
+        <thead>
+
+            <tr>
+
+                <th>
+                    User
+                </th>
+
+                <th>
+                    Profile
+                </th>
+
+                <th>
+                    Goal
+                </th>
+
+                <th>
+                    Intensity
+                </th>
+
+                <th>
+                    Latest Plan
+                </th>
+
+                <th>
+                    Action
+                </th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody>
+
+
+        {% for user in users %}
+
+
+            {% set plan = user.plans[0] if user.plans else none %}
+
+
+            <tr>
+
+
+                <td>
+
+                    <strong>
+                        {{ user.name }}
+                    </strong>
+
+                    <br>
+
+                    <small>
+                        {{ user.user_id }}
+                    </small>
+
+                </td>
+
+
+                <td>
+
+                    {{ user.age }} years
+
+                    <br>
+
+                    {{ user.weight_kg }} kg
+
+                </td>
+
+
+                <td>
+
+                    {{ user.goal }}
+
+                </td>
+
+
+                <td>
+
+                    {{ user.intensity }}
+
+                </td>
+
+
+                <td>
+
+
+                    {% if plan %}
+
+
+                    <details>
+
+                        <summary>
+                            View Plan #{{ plan.id }}
+                        </summary>
+
+
+                        <h4>
+                            Original Plan
+                        </h4>
+
+
+                        <pre class="small-pre">
+{{ plan.original_plan }}
+                        </pre>
+
+
+                        {% if plan.updated_plan %}
+
+                        <h4>
+                            Updated Plan
+                        </h4>
+
+
+                        <pre class="small-pre">
+{{ plan.updated_plan }}
+                        </pre>
+
+                        {% endif %}
+
+
+                    </details>
+
+
+                    {% else %}
+
+                    No Plan
+
+                    {% endif %}
+
+
+                </td>
+
+
+                <td>
+
+                    <button
+                        class="btn danger"
+                        onclick="deleteUser('{{ user.user_id }}')"
+                    >
+
+                        Delete
+
+                    </button>
+
+                </td>
+
+
+            </tr>
+
+
+        {% endfor %}
+
+
+        </tbody>
+
+
+    </table>
+
+
+    {% else %}
+
+
+    <div class="empty">
+
+        No users found.
+
+        <br><br>
+
+        Generate your first plan.
+
+    </div>
+
+
+    {% endif %}
+
+
+</section>
+
+
+<script src="{{ url_for('static', path='js/admin.js') }}"></script>
+
+
+{% endblock %}
